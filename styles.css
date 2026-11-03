@@ -26,6 +26,8 @@ body {
     flex-direction: column;
     text-align: center;
     gap: 1.5rem;
+    position: relative;
+    z-index: 100;
 }
 
 .buttonContainer {
@@ -61,8 +63,7 @@ button:hover {
 
 #app {
     width: 100%;
-    display: flex;
-    justify-content: center;
+    position: relative;
 }
 
 form {
@@ -79,23 +80,56 @@ form {
     justify-content: center;
 }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    padding: 1rem;
-    color: #efefef;
-
+.noteCard {
+    width: 250px;
+    height: 250px;
     background: #121212;
-    border-radius: 6px;
-    resize: vertical;
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
-    transition: border-color 0.2s ease;
-} 
-
-textarea:focus {
-    outline: none;
-    border: 1px solid #818cf8;
+    border: 1px solid #3F3F46;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 10;
 }
+
+.noteHeader {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.25rem;
+    padding: 0.4rem;
+    background: #1a1a1a;
+    cursor: move; 
+}
+
+.noteCard button {
+    background: #27272a;
+    color: #efefef;
+    border: 1px solid #3F3F46;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+    width: auto; 
+    height: auto;
+    cursor: pointer;
+}
+
+.noteCard button:hover {
+    border-color: #818cf8;
+    background: #3f3f46;
+}
+
+.noteCard textarea {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    color: #efefef;
+    padding: 0.75rem;
+    resize: none;
+    font-family: inherit;
+    outline: none;
+}
+
+
 
