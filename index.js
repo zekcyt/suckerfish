@@ -26,8 +26,6 @@ function createNote(id = Date.now(), content = "", x = 100, y = 200, isNew = fal
     const deleteBtn = document.createElement("button");
     deleteBtn.className = "deleteBtn";
     deleteBtn.textContent = "x";
-    header.appendChild(popoutBtn);
-    header.appendChild(saveBtn);
     header.appendChild(deleteBtn);
     
 
@@ -39,24 +37,38 @@ function createNote(id = Date.now(), content = "", x = 100, y = 200, isNew = fal
     textArea.style.left = `${x}px`;
     textArea.style.top = `${y}px`;
 
-
-popoutBtn.addEventListener("click", () => popoutNote(noteCard));
-
 saveBtn.addEventListener("click", () => {
     const textContent = textArea.value;
-    const fileName = `note-${id}.txt`;
-    saveToFile(textContent, fileName);
+
+    if (!textContent.trim()) {
+        alert("Cannot save empty note.");
+        return;
+    }
+
+    let userFileName = prompt("Enter a name for your note:", `note-${id}.txt`);
+
+    if (userFileName === null) return;
+
+    userFileName = userFileName.trim() || `note-${id}.txt`;
+ 
+    if (!userFileName.endsWith(".txt")) {
+        userFileName += ".txt";
+    }
+
+    saveToFile(textContent, userFileName);
 });
 
+popoutBtn.addEventListener("click", () => popoutNote(noteCard));
+    
 textArea.addEventListener("input", () => autosaveNotes());
 
 deleteBtn.addEventListener("click", () => {
     deleteNote(noteCard);
 });
 
-makeDraggable(noteCard, header);
-noteCard.appendChild(textArea);
-appContainer.appendChild(noteCard);
+    makeDraggable(noteCard, header);
+    noteCard.appendChild(textArea);
+    appContainer.appendChild(noteCard);
 
     if (isNew) { 
         autosaveNotes();
@@ -66,7 +78,7 @@ appContainer.appendChild(noteCard);
 
 function autosaveNotes() {
     const notes = Array.from(document.querySelectorAll(".noteCard")).map(card => {
-        const textArea = card.querySelector(".textarea");
+        const textArea = card.querySelector("textarea");
         return {
         id: card.dataset.id,
         content: textArea ? textArea.value : "",
@@ -109,8 +121,8 @@ function makeDraggable(element, handle = element) {
     let offsetX, offsetY;
 
     handle.addEventListener("mousedown", e => {
-        offsetX = e.clientX - parseInt(element.style.left);
-        offsetY = e.clientY - parseInt(element.style.top);
+        offsetX = e.clientX - element.offsetLeft;
+        offsetY = e.clientY - element.offsetTop;
 
         function mouseMove(e) {
             element.style.left = `${e.clientX - offsetX}px`;
